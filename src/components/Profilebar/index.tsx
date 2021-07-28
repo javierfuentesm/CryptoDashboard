@@ -25,7 +25,7 @@ export const Profilebar: FC = () => {
 
       <InfoContainer>
         <Label>Phone</Label>
-        <Info>${personalInfo.phoneNumber}</Info>
+        <Info>{personalInfo.phoneNumber}</Info>
       </InfoContainer>
     </ProfilebarWrapper>
   );
