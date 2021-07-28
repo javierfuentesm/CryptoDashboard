@@ -1,7 +1,7 @@
 import { useContext, createContext } from "react";
 
 export type PersonalInfoForm = {
-  name: string;
+  firstName: string;
   lastName: string;
   email: string;
   phoneNumber: string;

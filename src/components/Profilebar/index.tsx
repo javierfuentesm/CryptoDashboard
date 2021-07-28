@@ -16,7 +16,7 @@ export const Profilebar: FC = () => {
     <ProfilebarWrapper>
       <Profile>
         <Title>User information</Title>
-        <Name>{`${personalInfo.name} ${personalInfo.lastName}`}</Name>
+        <Name>{`${personalInfo.firstName} ${personalInfo.lastName}`}</Name>
       </Profile>
       <InfoContainer>
         <Label>Email</Label>

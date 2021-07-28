@@ -15,7 +15,7 @@ import { useNavigate } from "@reach/router";
 
 export const FormComponent = () => {
   const { form, handleInput } = useForm<PersonalInfoForm>({
-    name: "",
+    firstName: "",
     lastName: "",
     email: "",
     phoneNumber: "",
@@ -42,10 +42,11 @@ export const FormComponent = () => {
         <Input
           type="text"
           onChange={handleInput}
-          name="name"
-          value={form.name}
-          placeholder="Name"
-          aria-label="Name"
+          id="firstName"
+          name="firstName"
+          value={form.firstName}
+          placeholder="First Name"
+          aria-label="First Name"
           required
         />
 
@@ -53,6 +54,7 @@ export const FormComponent = () => {
           type="text"
           onChange={handleInput}
           value={form.lastName}
+          id="lastName"
           name="lastName"
           placeholder="Last Name"
           aria-label="Last Name"
@@ -63,19 +65,22 @@ export const FormComponent = () => {
           onChange={handleInput}
           value={form.email}
           name="email"
+          id="email"
           placeholder="Email"
+          aria-label="Email"
           required
         />
         <Input
           type="phone"
           onChange={handleInput}
+          id="phoneNumber"
           name="phoneNumber"
           value={form.phoneNumber}
           placeholder="Phone Number"
           aria-label="Phone Number"
           required
         />
-        <Submit type="submit" aria-label="Sumit" value="Submit" />
+        <Submit type="submit" aria-label="Submit" value="Submit" />
       </Form>
     </Wrapper>
   );

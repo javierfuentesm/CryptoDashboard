@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import {COINGECKO_USD, CRYPTOCOMPARE_USD, refreshDataTime, STORMGAIN_USD} from "../constants";
+import {
+  COINGECKO_USD,
+  CRYPTOCOMPARE_USD,
+  refreshDataTime,
+  STORMGAIN_USD,
+} from "../constants";
 import { cryptoCurrencies, formatData, refreshData } from "../utils";
 
 type state = {
@@ -16,11 +21,16 @@ export const useCrypto = () => {
   });
 
   useEffect(() => {
-    Promise.all([COINGECKO_USD, STORMGAIN_USD, CRYPTOCOMPARE_USD].map((u) => fetch(u)))
+    Promise.all(
+      [COINGECKO_USD, STORMGAIN_USD, CRYPTOCOMPARE_USD].map((u) => fetch(u))
+    )
       .then((responses) => Promise.all(responses.map((res) => res.json())))
-      .then((data) =>
-        setCrypto({ ...crypto, data: formatData(data), loading: false })
-      );
+      .then((data) => {
+        setCrypto({ ...crypto, data: formatData(data), loading: false });
+      })
+      .catch((error) => {
+        setCrypto({ ...crypto, loading: false, error });
+      });
   }, []);
 
   useEffect(() => {
@@ -28,7 +38,9 @@ export const useCrypto = () => {
       if (crypto) {
         setCrypto({ ...crypto, loading: true });
 
-        Promise.all([COINGECKO_USD, STORMGAIN_USD, CRYPTOCOMPARE_USD].map((u) => fetch(u)))
+        Promise.all(
+          [COINGECKO_USD, STORMGAIN_USD, CRYPTOCOMPARE_USD].map((u) => fetch(u))
+        )
           .then((responses) => Promise.all(responses.map((res) => res.json())))
           .then((data) => {
             const newState = refreshData(crypto.data, data);
