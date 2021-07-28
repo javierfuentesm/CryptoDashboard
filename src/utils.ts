@@ -8,7 +8,20 @@ export type APIs = {
   CRYPTOCOMPARE: [cryptoCurrency];
 };
 
+export type APIsForConversion = {
+  COINGECKO: number;
+  CRYPTOCOMPARE: number;
+};
+
+export type cryptoCurrenciesForConversion = {
+  [index: string]: any;
+  BTC: APIsForConversion;
+  ETH: APIsForConversion;
+  XRP: APIsForConversion;
+};
+
 export type cryptoCurrencies = {
+  [index: string]: any;
   BTC: APIs;
   ETH: APIs;
   XRP: APIs;
@@ -19,24 +32,6 @@ export const formatData = (data: any[]) => {
   const response2 = data[1];
   const response3 = data[2];
   const date = new Date(Date.now()).toTimeString();
-  // const COINGECKO = {
-  //   BTC: [{ price: response1[0].current_price, date }],
-  //   ETH: [{ price: response1[1].current_price, date }],
-  //   XRP: [{ price: response1[2].current_price, date }],
-  // };
-  //
-  // const STORMGAIN = {
-  //   BTC: [{ price: response2.BTC_USDT.last_price, date }],
-  //   ETH: [{ price: response2.ETH_USDT.last_price, date }],
-  //   XRP: [{ price: response2.XRP_USDT.last_price, date }],
-  // };
-  //
-  // const CRYPTOCOMPARE = {
-  //   BTC: [{ price: response3.BTC.USD, date }],
-  //   ETH: [{ price: response3.ETH.USD, date }],
-  //   XRP: [{ price: response3.XRP.USD, date }],
-  // };
-
   const BTC: APIs = {
     COINGECKO: [{ price: response1[0].current_price as string, date }],
     STORMGAIN: [{ price: response2.BTC_USDT.last_price as string, date }],
@@ -63,44 +58,62 @@ export const refreshData = (state: cryptoCurrencies, data: any[]) => {
   const response2 = data[1];
   const response3 = data[2];
 
-  newState.BTC.COINGECKO.push({
+  newState.BTC.COINGECKO.unshift({
     price: response1[0].current_price as string,
     date,
   });
-  newState.ETH.COINGECKO.push({
+  newState.ETH.COINGECKO.unshift({
     price: response1[1].current_price,
     date,
   });
-  newState.XRP.COINGECKO.push({
+  newState.XRP.COINGECKO.unshift({
     price: response1[2].current_price,
     date,
   });
 
-  newState.BTC.STORMGAIN.push({
+  newState.BTC.STORMGAIN.unshift({
     price: response2.BTC_USDT.last_price as string,
     date,
   });
-  newState.ETH.STORMGAIN.push({
+  newState.ETH.STORMGAIN.unshift({
     price: response3.ETH.USD as string,
     date,
   });
-  newState.XRP.STORMGAIN.push({
+  newState.XRP.STORMGAIN.unshift({
     price: response2.XRP_USDT.last_price as string,
     date,
   });
 
-  newState.BTC.CRYPTOCOMPARE.push({
+  newState.BTC.CRYPTOCOMPARE.unshift({
     price: response3.BTC.USD as string,
     date,
   });
-  newState.ETH.CRYPTOCOMPARE.push({
+  newState.ETH.CRYPTOCOMPARE.unshift({
     price: response3.ETH.USD as string,
     date,
   });
-  newState.XRP.CRYPTOCOMPARE.push({
+  newState.XRP.CRYPTOCOMPARE.unshift({
     price: response3.XRP.USD as string,
     date,
   });
 
   return newState;
+};
+
+export const formatDataForConverter = (data: any[]) => {
+  const response1 = data[0];
+  const response2 = data[1];
+  const BTC: APIsForConversion = {
+    COINGECKO: +response1[0].current_price,
+    CRYPTOCOMPARE: +response2.BTC.MXN,
+  };
+  const ETH: APIsForConversion = {
+    COINGECKO: +response1[1].current_price,
+    CRYPTOCOMPARE: +response2.ETH.MXN,
+  };
+  const XRP: APIsForConversion = {
+    COINGECKO: +response1[2].current_price,
+    CRYPTOCOMPARE: +response2.XRP.MXN,
+  };
+  return { BTC, ETH, XRP };
 };

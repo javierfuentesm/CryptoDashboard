@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { COINGECKO, CRYPTOCOMPARE, STORMGAIN } from "../constants";
+import {COINGECKO_USD, CRYPTOCOMPARE_USD, refreshDataTime, STORMGAIN_USD} from "../constants";
 import { cryptoCurrencies, formatData, refreshData } from "../utils";
 
 type state = {
   data: cryptoCurrencies | undefined;
-  error: null;
+  error: any;
   loading: boolean;
 };
 
@@ -16,7 +16,7 @@ export const useCrypto = () => {
   });
 
   useEffect(() => {
-    Promise.all([COINGECKO, STORMGAIN, CRYPTOCOMPARE].map((u) => fetch(u)))
+    Promise.all([COINGECKO_USD, STORMGAIN_USD, CRYPTOCOMPARE_USD].map((u) => fetch(u)))
       .then((responses) => Promise.all(responses.map((res) => res.json())))
       .then((data) =>
         setCrypto({ ...crypto, data: formatData(data), loading: false })
@@ -28,7 +28,7 @@ export const useCrypto = () => {
       if (crypto) {
         setCrypto({ ...crypto, loading: true });
 
-        Promise.all([COINGECKO, STORMGAIN, CRYPTOCOMPARE].map((u) => fetch(u)))
+        Promise.all([COINGECKO_USD, STORMGAIN_USD, CRYPTOCOMPARE_USD].map((u) => fetch(u)))
           .then((responses) => Promise.all(responses.map((res) => res.json())))
           .then((data) => {
             const newState = refreshData(crypto.data, data);
@@ -38,7 +38,7 @@ export const useCrypto = () => {
             setCrypto({ ...crypto, loading: false, error });
           });
       }
-    }, 15000);
+    }, refreshDataTime);
     return () => clearInterval(interval);
   }, [crypto, setCrypto]);
   return crypto;
